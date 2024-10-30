@@ -10,6 +10,8 @@ import {
   IconBrandGoogleFilled,
   IconBrandOnlyfans,
 } from "@tabler/icons-react";
+import { auth, provider, signInWithPopup } from "@/app/firebaseConfig";
+import Link from "next/link";
 
 export function SignupFormDemo() {
   const [firstname, setFirstname] = useState('');
@@ -62,8 +64,48 @@ export function SignupFormDemo() {
 
 
   };
+  
+  const handleGoogleSignIn = async () => {
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+
+      if (user) {
+        const userData = {
+          uid: user.uid,
+          email: user.email,
+          firstname: user.displayName?.split(" ")[0] || "",
+          lastname: user.displayName?.split(" ")[1] || "",
+          username: user.email?.split("@")[0] || "",
+          photoURL: user.photoURL,
+        };
+
+        const response = await fetch("/api/auth/signin-google", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(userData),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setMessage(`User Sign In: ${data.user.username}`);
+        } else {
+          const errorData = await response.json();
+          setMessage(`Error: ${errorData.message}`);
+        }
+      }
+    } catch (error) {
+      console.error("Google Sign-In error:", error);
+      setMessage("Google sign-in failed. Please try again.");
+    }
+  };
+
+
+
   return (
-    <div className="max-w-md  w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black">
+    <div className="max-w-md mt-20 w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black">
       <h2 className="font-bold text-xl text-center text-neutral-800 dark:text-neutral-200">
         Welcome to Digital-Tales 
       </h2>
@@ -119,7 +161,10 @@ export function SignupFormDemo() {
           Sign up &rarr;
           <BottomGradient />
         </button>
+
         {message && <p className="mt-4 text-red-500">{message}</p>} {/* Display message */}
+        
+        <p className="font-serif mt-3">Already Have An Account?<Link href='/signin'><span className="text-blue-500">Sign in</span></Link></p>
         <div className="bg-gradient-to-r from-transparent via-neutral-300 dark:via-neutral-700 to-transparent my-8 h-[1px] w-full" />
 
         <div className="flex flex-col space-y-4">
@@ -135,7 +180,7 @@ export function SignupFormDemo() {
           </button>
           <button
             className=" relative group/btn flex space-x-2 items-center justify-center px-4 w-full text-black rounded-md h-10 font-medium shadow-input bg-gray-50 dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
-            type="submit"
+            type="submit"  onClick={handleGoogleSignIn}
           >
            
             <img src="./gi.jpg" className="h-4 w-4 rounded-full"/>
