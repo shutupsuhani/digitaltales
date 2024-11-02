@@ -8,7 +8,7 @@ import {
   IconBrandFacebook,
   IconBrandGoogle,
 } from "@tabler/icons-react";
-import { auth, provider, signInWithPopup } from "@/app/firebaseConfig"; // Import from Firebase config
+import { auth, provider, signInWithPopup } from "@/app/firebaseConfig";
 
 export function SigninFormDemo() {
   const [username, setUsername] = useState('');
@@ -34,6 +34,8 @@ export function SigninFormDemo() {
 
       if (response.ok) {
         const data = await response.json();
+        localStorage.setItem('token', data.token);
+        console.log(data.token); 
         setMessage(`User Sign In: ${data.user.username}`);
       } else {
         const errorData = await response.json();
@@ -49,6 +51,7 @@ export function SigninFormDemo() {
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
+      
 
       if (user) {
         const userData = {
@@ -60,16 +63,20 @@ export function SigninFormDemo() {
           photoURL: user.photoURL,
         };
 
+
+        const idToken = await user.getIdToken();
+
         const response = await fetch("/api/auth/signin-google", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(userData),
+          body: JSON.stringify({ ...userData, idToken }),
         });
 
         if (response.ok) {
           const data = await response.json();
+          localStorage.setItem('token', data.token);
           setMessage(`User Sign In: ${data.user.username}`);
         } else {
           const errorData = await response.json();
@@ -83,7 +90,7 @@ export function SigninFormDemo() {
   };
 
   return (
-    <div className="max-w-md mt-3 w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black">
+    <div className="max-w-md  mt-20 w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black">
       <h2 className="font-bold text-xl text-center text-neutral-800 dark:text-neutral-200">
         Login to Digital-Tales 
       </h2>

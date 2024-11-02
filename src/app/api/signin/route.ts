@@ -2,7 +2,9 @@ import { NextResponse } from 'next/server';
 import connectMongo from '@/lib/mongodb'; 
 import UserModel from '@/models/User'; 
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
+const JWT_KEY=process.env.JWT_SECRET;
 
 export async function POST(request: Request) {
     await connectMongo(); 
@@ -14,6 +16,9 @@ export async function POST(request: Request) {
   
     if (!username || !password) {
       return NextResponse.json({ error: 'All fields are required.' }, { status: 400 });
+    }
+    if (!JWT_KEY) {
+      throw new Error("JWT_SECRET is not defined in the environment variables");
     }
   
    
@@ -28,8 +33,15 @@ export async function POST(request: Request) {
     if(!isMatch){
         return NextResponse.json({ error: 'Invalid Password' }, { status: 401 });
     }
-
-    return NextResponse.json({ message: 'Sign-in successful', user: { username: user.username, email: user.email } },{status:200});
+    
+    const token = jwt.sign(
+      { userId: user._id, username: user.username }, 
+       JWT_KEY,  
+      { expiresIn: '1h',algorithm: 'HS256' }      
+  );
+   
+    
+    return NextResponse.json({ message: 'Sign-in successful', user: { username: user.username,token, email: user.email } },{status:200});
   
  }catch(error){
     return NextResponse.json({ message: 'Error during sign-in'},{status:500});
