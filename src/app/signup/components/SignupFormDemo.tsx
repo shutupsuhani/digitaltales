@@ -164,7 +164,7 @@ export function SignupFormDemo() {
 
         {message && <p className="mt-4 text-red-500">{message}</p>} {/* Display message */}
         
-        <p className="font-serif mt-3">Already Have An Account?<Link href='/signin'><span className="text-blue-500">Sign in</span></Link></p>
+        <p className="font-serif mt-3 text-white">Already Have An Account?<Link href='/signin'><span className="text-blue-500">Sign in</span></Link></p>
         <div className="bg-gradient-to-r from-transparent via-neutral-300 dark:via-neutral-700 to-transparent my-8 h-[1px] w-full" />
 
         <div className="flex flex-col space-y-4">

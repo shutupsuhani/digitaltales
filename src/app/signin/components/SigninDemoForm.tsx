@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import Link from "next/link"
+import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import {
   IconBrandFacebook,
@@ -14,6 +15,7 @@ export function SigninFormDemo() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -37,6 +39,7 @@ export function SigninFormDemo() {
         localStorage.setItem('token', data.token);
         console.log(data.token); 
         setMessage(`User Sign In: ${data.user.username}`);
+        router.push("/"); // Navigate to the home page on success
       } else {
         const errorData = await response.json();
         setMessage(`Error: ${errorData.message}`);
@@ -78,6 +81,7 @@ export function SigninFormDemo() {
           const data = await response.json();
           localStorage.setItem('token', data.token);
           setMessage(`User Sign In: ${data.user.username}`);
+          router.push("/"); // Navigate to the home page on success
         } else {
           const errorData = await response.json();
           setMessage(`Error: ${errorData.message}`);
