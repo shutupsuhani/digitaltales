@@ -1,28 +1,39 @@
-// src/app/layout.tsx
-"use client";
+import {
+  ClerkProvider,
+  SignInButton,
+  SignedIn,
+  SignedOut,
+  RedirectToSignIn,
+  SignOutButton
+} from '@clerk/nextjs';
+import './globals.css';
+import { Outfit } from "next/font/google";
 
-import { Provider } from 'react-redux';
-import store from '@/store/store';
-import { useEffect } from 'react';
-import { setUser } from '@/store/authSlice';
-import { getStoredUser } from '@/utils/tokenManager';
-import "@/styles/globals.css";
+const inter = Outfit({ subsets: ["latin"] });
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-  useEffect(() => {
-    const user = getStoredUser();
-    if (user) {
-      setUser(user); // Dispatch the user info to the store
-    }
-  }, []);
-
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <html lang="en">
-      <body>
-        <Provider store={store}>
+    <ClerkProvider>
+      <html lang="en">
+        <body className={inter.className}>
+          <SignedOut>
+            <RedirectToSignIn /> {/* Redirect to sign-in page if not signed in */}
+          </SignedOut>
+          
+          <SignedIn>
+            <div className="user-info">
+              <p>Welcome, user!</p>
+              <SignOutButton /> {/* Sign out button */}
+            </div>
+          </SignedIn>
+
           {children}
-        </Provider>
-      </body>
-    </html>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

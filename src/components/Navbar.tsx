@@ -1,18 +1,32 @@
 "use client"
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { FaMedium,FaPen, FaSearch,FaUser, FaBell } from 'react-icons/fa';
+import { UserButton } from '@clerk/nextjs';
+
 
 const Navbar: React.FC = () => {
+  
+   const [isScroll,setIsScroll]=useState(false);
+   
+   useEffect(()=>{
+        const handleScroll=()=>{
+          setIsScroll(window.scrollY > 10);
+        }  
+        window.addEventListener("scroll",handleScroll);
+        return () => window.removeEventListener("scroll",handleScroll);
+   },[])
+
+
   return (
-    <nav className="bg-white shadow-md">
+    <nav className={`fixed top-0 p-2 border-b border-gray-300 left-0 w-full z-50 transition-shadow ${isScroll? "bg-white shadow-lg" :"bg-white"}`}>
       <div className="container mx-auto px-4 py-2 flex items-center justify-between">
         
         {/* Logo */}
         <Link href="/" className="text-2xl font-bold text-gray-900">
           <div className='flex justify-start'>
-          <img src='/logo.jpg' width={50} height={50} className='rounded-full shadow-lg'/>
+          <img src='/thunder.png' width={40} height={40} className='rounded-full '/>
           <h3 className='mt-2 font-serif ml-1'>DigiTales</h3>
           </div>
         </Link>
@@ -34,7 +48,15 @@ const Navbar: React.FC = () => {
             <span className="hidden sm:inline">Write</span>
           </Link>
           <FaBell className="text-gray-600 hover:text-black cursor-pointer" />
-          <Link href="/user/profile"><FaUser/></Link>
+          
+          <UserButton
+          appearance={{
+            elements: {
+              userButtonAvatarBox: 'h-8 w-8', // Set avatar size
+            },
+          }}
+        />
+       
         </div>
       </div>
     </nav>

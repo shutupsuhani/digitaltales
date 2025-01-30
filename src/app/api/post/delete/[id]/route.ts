@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import Post from "@/models/Post";
-import connectMongo from "@/lib/mongodb";
+import connectMongo from "@/lib/db";
 import jwt from "jsonwebtoken";
 
 export async function DELETE(request: Request, { params }: { params: { id: string } }) {

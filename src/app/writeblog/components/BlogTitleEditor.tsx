@@ -1,6 +1,5 @@
 "use client"
 
-
 import React, { useState } from "react";
 
 const BlogTitleEditor = () => {
@@ -27,7 +26,7 @@ const BlogTitleEditor = () => {
   };
 
   return (
-    <div className="flex items-center justify-center h-screen">
+    <div className="flex items-center justify-center h-8">
       {isEditing ? (
         <input
           type="text"

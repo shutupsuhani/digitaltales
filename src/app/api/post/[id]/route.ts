@@ -28,7 +28,7 @@ export async function GET(request: Request, { params }: { params: { id: string }
    import { NextResponse } from "next/server";
    import jwt from "jsonwebtoken";
    import Post from "@/models/Post";
-   import connectMongo from "@/lib/mongodb";
+   import connectMongo from "@/lib/db";
    
    const JWT_SECRET = process.env.JWT_SECRET;
    

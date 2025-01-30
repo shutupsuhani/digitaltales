@@ -3,23 +3,26 @@ import mongoose, { Schema, Document, model, models } from "mongoose";
 export interface Post extends Document {
   title: string;
   content: string;
-  author: mongoose.Types.ObjectId;
+  author: string; // Clerk User ID
   createdAt: Date;
   updatedAt: Date;
-  likes: { type: Number, default:0 }; 
-  likedBy: string[],
+  likes: number;
+  likedBy: string[]; // Array of Clerk User IDs
 }
 
 const PostSchema = new Schema<Post>(
   {
     title: { type: String, required: true },
     content: { type: String, required: true },
-    author: { type: Schema.Types.ObjectId, ref: "User", required: true },
-    likes: { type:Number, default:0},
-    likedBy: { type: [String], default: [] },
+    
+    // Storing Clerk user ID instead of MongoDB ObjectId
+    author: { type: String, required: true }, 
+    
+    likes: { type: Number, default: 0 },
+    likedBy: { type: [String], default: [] }, // Array of Clerk user IDs
   },
   {
-    timestamps: true,
+    timestamps: true, // Automatically adds createdAt & updatedAt fields
   }
 );
 

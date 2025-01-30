@@ -1,7 +1,7 @@
 //auth/signin-with-google/route.ts
 
 import { NextResponse } from "next/server";
-import connectMongo from '@/lib/mongodb'; 
+import connectMongo from '@/lib/db'; 
 import UserModel from '@/models/User'; 
 
 

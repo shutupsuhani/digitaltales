@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import Post from '@/models/Post'; // Adjust the import path based on your structure
-import connectMongo from '@/lib/mongodb'; // Ensure you have this utility to connect to MongoDB
+import connectMongo from '@/lib/db'; // Ensure you have this utility to connect to MongoDB
 import jwt from 'jsonwebtoken';
 
 export async function PUT(request: Request, { params }: { params: { id: string } }) {
