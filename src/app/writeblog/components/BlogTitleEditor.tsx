@@ -1,17 +1,21 @@
-"use client"
+// BlogTitleEditor.tsx
+"use client";
 
 import React, { useState } from "react";
 
-const BlogTitleEditor = () => {
-  const [isEditing, setIsEditing] = useState(false); // state to track whether the title is being edited
-  const [title, setTitle] = useState("Blog Title"); // initial title of the blog
+interface BlogTitleEditorProps {
+  title: string;
+  setTitle: (title: string) => void;
+}
 
-  // Handle title click to switch to edit mode
+const BlogTitleEditor = ({ title, setTitle }: BlogTitleEditorProps) => {
+  const [isEditing, setIsEditing] = useState(false);
+
   const handleTitleClick = () => {
     setIsEditing(true);
   };
 
-  const handleTitleChange = (event) => {
+  const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
   };
 
@@ -19,7 +23,7 @@ const BlogTitleEditor = () => {
     setIsEditing(false);
   };
 
-  const handleKeyPress = (event) => {
+  const handleKeyPress = (event: React.KeyboardEvent) => {
     if (event.key === "Enter") {
       setIsEditing(false); // Save title when Enter is pressed
     }
@@ -31,6 +35,7 @@ const BlogTitleEditor = () => {
         <input
           type="text"
           value={title}
+          required
           onChange={handleTitleChange}
           onBlur={handleBlur}
           onKeyPress={handleKeyPress}
@@ -38,10 +43,7 @@ const BlogTitleEditor = () => {
           className="text-2xl border-b-2 border-gray-500 focus:outline-none"
         />
       ) : (
-        <h1
-          onClick={handleTitleClick}
-          className="text-2xl cursor-pointer"
-        >
+        <h1 onClick={handleTitleClick} className="text-2xl cursor-pointer">
           {title}
         </h1>
       )}

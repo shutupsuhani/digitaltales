@@ -26,8 +26,7 @@ export default function RootLayout({
           
           <SignedIn>
             <div className="user-info">
-              <p>Welcome, user!</p>
-              <SignOutButton /> {/* Sign out button */}
+              
             </div>
           </SignedIn>
 
