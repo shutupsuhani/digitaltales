@@ -1,6 +1,6 @@
 "use client";
 import { useRef } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react"; 
 
 const categories = [
   "Writing",
@@ -11,22 +11,16 @@ const categories = [
   "Programming",
   "Travelling",
   "Food",
-
 ];
 
 const CategoryNav = () => {
-  const scrollRef = useRef(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
-  // Scroll handler
-  const scroll = (direction) => {
+  const scroll = (direction: "left" | "right") => {
     const { current } = scrollRef;
     if (current) {
-      const scrollAmount = 200; // Adjust scroll amount as needed
-      if (direction === "left") {
-        current.scrollBy({ left: -scrollAmount, behavior: "smooth" });
-      } else if (direction === "right") {
-        current.scrollBy({ left: scrollAmount, behavior: "smooth" });
-      }
+      const scrollAmount = 200;
+      current.scrollLeft += direction === "left" ? -scrollAmount : scrollAmount;
     }
   };
 

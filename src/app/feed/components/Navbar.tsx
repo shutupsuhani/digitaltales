@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { FaMedium,FaPen, FaSearch,FaUser, FaBell } from 'react-icons/fa';
+import { FaPen, FaSearch, FaBell } from 'react-icons/fa';
 import { UserButton } from '@clerk/nextjs';
 
 
