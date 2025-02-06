@@ -6,9 +6,7 @@ import { ArrowLeft, SendHorizontalIcon } from "lucide-react";
 import BlogTitleEditor from "./BlogTitleEditor";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { useUser } from "@clerk/nextjs";
-import { db } from "../../../utils/db"; 
-import { Blogs } from "../../../utils/schema"; 
+
 
 // Dynamically import the ToastEditor component
 const ToastEditor = dynamic(() => import("./ToastEditor"), {
@@ -18,38 +16,10 @@ const ToastEditor = dynamic(() => import("./ToastEditor"), {
 const Navigation = () => {
   const [title, setTitle] = useState<string>("Blog Title");
   const [content, setContent] = useState<string>("");
-  const { isLoaded, user } = useUser();
+  
 
   const handleCreatePost = async () => {
-    if (!isLoaded || !user) {
-      alert("You must be logged in to post.");
-      return;
-    }
-
-    // Ensure both title and content are not empty
-    if (!title.trim() || !content.trim()) {
-      alert("Both title and content are required.");
-      return;
-    }
-
-    // Prepare post data
-    const postData = {
-      title,
-      content,
-      createdBy: user.primaryEmailAddress?.emailAddress || "Anonymous",
-      createdAt: new Date().toISOString(),
-    };
-
-    try {
-      // Insert post into the database
-      await db.insert(Blogs).values(postData);
-      alert("Post created successfully!");
-      setTitle(""); // Clear the title
-      setContent(""); // Clear the content
-    } catch (error) {
-      console.error("Error saving the post:", error);
-      alert("Error saving the post. Please try again.");
-    }
+     alert('hi baby');
   };
 
   return (
